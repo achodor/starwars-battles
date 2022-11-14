@@ -17,7 +17,7 @@ export default function Starships() {
         <Combobox
           url="starships"
           onChange={value => {
-            navigate(`/starships/${one}/${value.split('/').at(-2)}`);
+            navigate(`/starships/${one || 0}/${value.split('/').at(-2)}`);
           }}
         />
         <Outlet />

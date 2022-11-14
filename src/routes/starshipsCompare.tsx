@@ -4,24 +4,30 @@ import { useStarships } from '../hooks/useStarships';
 import { Starship } from '../types/Starship';
 
 export async function loader({ params }: LoaderFunctionArgs): Promise<Starship[]> {
-  const resOne = await fetch(`https://swapi.dev/api/starships/${params.one}/`);
-  const resTwo = await fetch(`https://swapi.dev/api/starships/${params.two}/`);
+  let one = null;
+  let two = null;
 
-  if (resOne.status !== 200 || resTwo.status !== 200) {
-    return [];
+  if (Number(params.one)) {
+    const resOne = await fetch(`https://swapi.dev/api/starships/${params.one}/`);
+    one = await resOne.json();
   }
 
-  return [await resOne.json(), await resTwo.json()];
+  if (Number(params.two)) {
+    const resTwo = await fetch(`https://swapi.dev/api/starships/${params.two}/`);
+    two = await resTwo.json();
+  }
+
+  return [one, two];
 }
 
 export default function StarshipsCompare() {
   const data = useLoaderData() as Starship[];
   const { starshipsComparison } = useStarships(data);
 
-  return data.length === 2 ? (
+  return (
     <>
-      <StarshipsCard starship={starshipsComparison[0]} />
-      <StarshipsCard starship={starshipsComparison[1]} />
+      {starshipsComparison[0]?.name ? <StarshipsCard starship={starshipsComparison[0]} /> : <div />}
+      {starshipsComparison[1]?.name ? <StarshipsCard starship={starshipsComparison[1]} /> : <div />}
     </>
-  ) : null;
+  );
 }

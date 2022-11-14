@@ -11,13 +11,13 @@ export default function Characters() {
         <Combobox
           url="people"
           onChange={value => {
-            navigate(`/characters/${value.split('/').at(-2)}/${two || ''}`);
+            navigate(`/characters/${value.split('/').at(-2)}/${two || 0}`);
           }}
         />
         <Combobox
           url="people"
           onChange={value => {
-            navigate(`/characters/${one}/${value.split('/').at(-2)}`);
+            navigate(`/characters/${one || 0}/${value.split('/').at(-2)}`);
           }}
         />
         <Outlet />

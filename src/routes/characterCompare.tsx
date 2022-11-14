@@ -4,24 +4,30 @@ import { useCharacters } from '../hooks/useCharacters';
 import { Character } from '../types/Character';
 
 export async function loader({ params }: LoaderFunctionArgs): Promise<Character[]> {
-  const resOne = await fetch(`https://swapi.dev/api/people/${params.one}/`);
-  const resTwo = await fetch(`https://swapi.dev/api/people/${params.two}/`);
+  let one = null;
+  let two = null;
 
-  if (resOne.status !== 200 || resTwo.status !== 200) {
-    return [];
+  if (Number(params.one)) {
+    const resOne = await fetch(`https://swapi.dev/api/people/${params.one}/`);
+    one = await resOne.json();
   }
 
-  return [await resOne.json(), await resTwo.json()];
+  if (Number(params.two)) {
+    const resTwo = await fetch(`https://swapi.dev/api/people/${params.two}/`);
+    two = await resTwo.json();
+  }
+
+  return [one, two];
 }
 
 export default function CharactersCompare() {
   const data = useLoaderData() as Character[];
   const { charactersComparison } = useCharacters(data);
 
-  return data.length === 2 ? (
+  return (
     <>
-      <CharactersCard character={charactersComparison[0]} />
-      <CharactersCard character={charactersComparison[1]} />
+      {charactersComparison[0]?.name ? <CharactersCard character={charactersComparison[0]} /> : <div />}
+      {charactersComparison[1]?.name ? <CharactersCard character={charactersComparison[1]} /> : <div />}
     </>
-  ) : null;
+  );
 }
