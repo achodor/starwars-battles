@@ -10,12 +10,14 @@ export default function Starships() {
       <div className="grid grid-cols-2 gap-8">
         <Combobox
           url="starships"
+          name="starship-1"
           onChange={value => {
             navigate(`/starships/${value.split('/').at(-2)}/${two || ''}`);
           }}
         />
         <Combobox
           url="starships"
+          name="starship-2"
           onChange={value => {
             navigate(`/starships/${one || 0}/${value.split('/').at(-2)}`);
           }}

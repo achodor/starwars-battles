@@ -3,10 +3,11 @@ import { Combobox as HeadlessCombobox, Transition } from '@headlessui/react';
 
 type ComboboxProps = {
   url: string;
+  name: string;
   onChange?: (value: string) => void;
 };
 
-const Combobox = <T extends { name: string; url: string }>({ url, onChange }: ComboboxProps) => {
+const Combobox = <T extends { name: string; url: string }>({ url, name, onChange }: ComboboxProps) => {
   const [data, setData] = useState<T[]>([]);
   const [selected, setSelected] = useState<T | null>(null);
   const [query, setQuery] = useState('');
@@ -31,6 +32,7 @@ const Combobox = <T extends { name: string; url: string }>({ url, onChange }: Co
             className="z-10 h-full w-full border border-zinc-800 bg-black px-4 font-bold uppercase placeholder:text-zinc-700"
             displayValue={(item: T) => item?.name}
             onChange={event => setQuery(event.target.value)}
+            name={name}
             placeholder="Select"
           />
           <HeadlessCombobox.Button className="absolute inset-y-0 right-2 z-10 flex items-center pr-2">
